@@ -15,7 +15,7 @@ public class Api_LoginStepDefs {
     private Response response;
 
     // Base URL for the API
-    private static final String BASE_URL = "http://localhost:3001";
+    private static final String BASE_URL = "http://localhost:5000";
 
     /**
      * Step 1: Successful login with valid credentials
