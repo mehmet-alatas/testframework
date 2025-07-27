@@ -31,8 +31,8 @@ jobs:
       - name: Build with Maven
         run: mvn clean test
 
-      - name: Upload artifact
-        uses: github/artifacts@v1
-        with:
-         name: test-results
-         path: target/cucumber-html-reports/overview-features.html
+#      - name: Upload artifact
+#        uses: github/artifacts@v1
+#        with:
+#         name: test-results
+#         path: target/cucumber-html-reports/overview-features.html
