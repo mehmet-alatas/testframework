@@ -28,6 +28,47 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
+
+      # Docker kurulumu
+      - name: Set up Docker
+        run: |
+          sudo apt-get install docker.io
+          sudo systemctl start docker
+          sudo systemctl enable docker
+
+      # Backend uygulamasını Docker Hub'dan çekme
+      - name: Pull backend app from Docker Hub
+        run: |
+          docker pull mehmetaa/backend:latest
+
+      # Frontend uygulamasını Docker Hub'dan çekme
+      - name: Pull frontend app from Docker Hub
+        run: |
+          docker pull mehmetaa/frontend:latest
+
+      # Backend Docker container'ını çalıştırma
+      - name: Run backend Docker container
+        run: |
+          docker run -d --name backend-app -p 8080:8080 mehmetaa/backend:latest
+
+      # Frontend Docker container'ını çalıştırma
+      - name: Run frontend Docker container
+        run: |
+          docker run -d --name frontend-app -p 3000:3000 mehmetaa/frontend:latest
+
+      # Uygulamanın hazır olmasını bekleme
+      - name: Wait for the apps to be ready
+        run: |
+          while ! curl --silent --fail http://localhost:8080; do
+            echo "Waiting for backend to start..."
+            sleep 10
+          done
+          while ! curl --silent --fail http://localhost:3000; do
+            echo "Waiting for frontend to start..."
+            sleep 10
+          done
+          
+      # Selenium Java testlerini çalıştırma
       - name: Build with Maven
         run: mvn clean test
 
