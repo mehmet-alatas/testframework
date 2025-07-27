@@ -33,6 +33,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      # Docker ağı oluşturuluyor
+      - name: Create Docker network
+        run: |
+          docker network create my_network || true
+
       # Backend uygulamasını Docker Hub'dan çekme
       - name: Pull backend app from Docker Hub
         run: |
@@ -46,17 +51,17 @@ jobs:
       # Backend Docker container'ını çalıştırma
       - name: Run backend Docker container
         run: |
-          docker run -d --name backend-app -p 8080:8080 mehmetaa/backend:latest
+          docker run -d --name backend-app --network my_network -p 5000:5000 mehmetaa/backend:latest
 
       # Frontend Docker container'ını çalıştırma
       - name: Run frontend Docker container
         run: |
-          docker run -d --name frontend-app -p 3000:3000 mehmetaa/frontend:latest
+          docker run -d --name frontend-app --network my_network -p 3000:3000 -e REACT_APP_API_URL=http://localhost:5000 mehmetaa/frontend:latest
 
       # Uygulamanın hazır olmasını bekleme
       - name: Wait for the apps to be ready
         run: |
-          while ! curl --silent --fail http://localhost:8080; do
+          while ! curl --silent --fail http://localhost:5000; do
             echo "Waiting for backend to start..."
             sleep 10
           done
