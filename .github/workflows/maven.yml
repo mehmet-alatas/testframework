@@ -21,18 +21,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        cache: maven
-    - name: Build with Maven
-      run: mvn clean test
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build with Maven
+        run: mvn clean test
 
-    - name:  Upload artifact
-      uses:  github/actions/upload-artifact@v1
-      with:
-        name: test-results
-        path: target/cucumber-html-reports/overview-features.html
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+         name: test-results
+         path: target/cucumber-html-reports/overview-features.html
