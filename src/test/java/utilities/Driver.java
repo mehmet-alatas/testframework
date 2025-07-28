@@ -5,11 +5,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 
 public class Driver {
@@ -23,7 +20,7 @@ public class Driver {
 
     public static WebDriver getDriver() {
         if (driverPool.get() == null) {
-            // WebDriver i thread bazında oluşturuyoruz.
+            // WebDriver'ı thread bazında oluşturuyoruz.
             switch (ConfigReader.getProperty("browser")) {
                 case "chrome":
                     driverPool.set(new ChromeDriver());
@@ -37,20 +34,32 @@ public class Driver {
                 case "firefox":
                     driverPool.set(new FirefoxDriver());
                     break;
+                case "headless":
+                    // Headless modunun yapılandırılması
+                    driverPool.set(createHeadlessDriver());
+                    break;
                 default:
                     driverPool.set(new ChromeDriver());
             }
 
-            // Oluşturulan WebDriveri yapılandırıyoruz.
+            // Oluşturulan WebDriver'i yapılandırıyoruz.
             driverPool.get().manage().window().maximize();
             driverPool.get().manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
         }
-        // Thread'a özgü WebDriver objecti return ediyoruz.
+        // Thread'a özgü WebDriver objectini return ediyoruz.
         return driverPool.get();
     }
 
-    private Driver() throws MalformedURLException {
+    private Driver() {
         // Singleton pattern
+    }
+
+    private static WebDriver createHeadlessDriver() {
+        // Headless modda Chrome başlatma
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--disable-gpu");  // GPU'yu devre dışı bırak
+        return new ChromeDriver(options);
     }
 
     public static void closeDriver() {
