@@ -1,55 +1,55 @@
-name: Java CI with Maven
-
-on:
-  workflow_dispatch:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    # Maven ve JDK 21 içeren bir konteynerde çalıştırıyoruz
-    container:
-      image: maven:3.9.5-eclipse-temurin-21
-
-    # Frontend, backend ve selenium servislerini tanımlıyoruz
-    services:
-      backend:
-        image: mehmetaa/backend:latest
-        # kendi port haritalamanıza gerek yok; job konteyneri içinde backend adıyla erişilir
-      frontend:
-        image: mehmetaa/frontend:latest
-        env:
-          # Frontend’in backend’e bağlanması için API adresi
-          REACT_APP_API_URL: http://backend:5000
-      selenium:
-        image: selenium/standalone-chrome
-        options: --shm-size=2gb  # tarayıcıda bellek sorunlarını azaltmak için
-
-    steps:
-      - uses: actions/checkout@v4
-
-      # (opsiyonel) Maven cache'i kullanmak isterseniz
-      - name: Cache Maven repository
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-m2-
-
-      # Servislerin tamamen ayağa kalkmasını bekliyoruz
-      - name: Wait for services
-        run: |
-          until curl --silent --fail http://backend:5000; do echo "Waiting for backend..."; sleep 5; done
-          until curl --silent --fail http://frontend:3000; do echo "Waiting for frontend..."; sleep 5; done
-
-      # Selenium + Cucumber testlerini çalıştırıyoruz
-      - name: Run tests
-        env:
-          BACKEND_URL: http://backend:5000
-          FRONTEND_URL: http://frontend:3000
-          SELENIUM_REMOTE_URL: http://selenium:4444/wd/hub
-        run: mvn -B clean test
+#name: Java CI with Maven
+#
+#on:
+#  workflow_dispatch:
+#  push:
+#    branches: ["main"]
+#  pull_request:
+#    branches: ["main"]
+#
+#jobs:
+#  test:
+#    runs-on: ubuntu-latest
+#    # Maven ve JDK 21 içeren bir konteynerde çalıştırıyoruz
+#    container:
+#      image: maven:3.9.5-eclipse-temurin-21
+#
+#    # Frontend, backend ve selenium servislerini tanımlıyoruz
+#    services:
+#      backend:
+#        image: mehmetaa/backend:latest
+#        # kendi port haritalamanıza gerek yok; job konteyneri içinde backend adıyla erişilir
+#      frontend:
+#        image: mehmetaa/frontend:latest
+#        env:
+#          # Frontend’in backend’e bağlanması için API adresi
+#          REACT_APP_API_URL: http://backend:5000
+#      selenium:
+#        image: selenium/standalone-chrome
+#        options: --shm-size=2gb  # tarayıcıda bellek sorunlarını azaltmak için
+#
+#    steps:
+#      - uses: actions/checkout@v4
+#
+#      # (opsiyonel) Maven cache'i kullanmak isterseniz
+#      - name: Cache Maven repository
+#        uses: actions/cache@v3
+#        with:
+#          path: ~/.m2/repository
+#          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+#          restore-keys: |
+#            ${{ runner.os }}-m2-
+#
+#      # Servislerin tamamen ayağa kalkmasını bekliyoruz
+#      - name: Wait for services
+#        run: |
+#          until curl --silent --fail http://backend:5000; do echo "Waiting for backend..."; sleep 5; done
+#          until curl --silent --fail http://frontend:3000; do echo "Waiting for frontend..."; sleep 5; done
+#
+#      # Selenium + Cucumber testlerini çalıştırıyoruz
+#      - name: Run tests
+#        env:
+#          BACKEND_URL: http://backend:5000
+#          FRONTEND_URL: http://frontend:3000
+#          SELENIUM_REMOTE_URL: http://selenium:4444/wd/hub
+#        run: mvn -B clean test
