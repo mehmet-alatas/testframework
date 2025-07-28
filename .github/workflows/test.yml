@@ -42,7 +42,7 @@ jobs:
 
       # 5. Testleri çalıştırma (Selenium ve Cucumber testleri)
       - name: Run Selenium tests with Maven
-        run: mvn clean verify
+        run: mvn clean install
 
       # 6. Test sonuçlarını yükleme (Opsiyonel)
       # - name: Upload test results as artifact
