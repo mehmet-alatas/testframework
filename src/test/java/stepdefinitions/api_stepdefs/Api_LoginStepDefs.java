@@ -15,7 +15,8 @@ public class Api_LoginStepDefs {
     private Response response;
 
     // Base URL for the API
-    private static final String BASE_URL = "http://localhost:5000";
+   private static final String BASE_URL = "http://localhost:3001";
+   // private static final String BASE_URL = System.getenv("BACKEND_URL");
 
     /**
      * Step 1: Successful login with valid credentials
@@ -41,7 +42,7 @@ public class Api_LoginStepDefs {
     }
 
 
-    @Then("the response status code should be {int}")
+    @Then("response status code should be {int}")
     public void the_response_status_code_should_be(int statusCode) {
         // Assert that the response status code matches the expected one
         assertEquals(statusCode, response.getStatusCode());

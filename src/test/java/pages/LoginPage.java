@@ -35,7 +35,7 @@ public class LoginPage {
     private WebElement loginHeaderText;
 
 
-    @FindBy(xpath = "//p[ contains(text(),'ullanıcı')]")
+    @FindBy(xpath = "//p[ contains(text(),'password')]")
     private WebElement errorMessage;
 
 

@@ -39,7 +39,7 @@ public class LoginStepDefs {
     @Then("I should see an authentication error message")
     public void iShouldSeeAnAuthenticationErrorMessage() {
         LoginPage loginPage = new LoginPage();
-        loginPage.verifyErrorMessage("Geçersiz kullanıcı adı veya şifre");
+        loginPage.verifyErrorMessage("Invalid username or password");
 
     }
 
