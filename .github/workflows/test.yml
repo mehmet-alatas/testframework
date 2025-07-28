@@ -28,25 +28,25 @@ jobs:
       - name: Build with Maven
         run: mvn clean install -DskipTests
 
-      # 4. Uygulamanın başlatılmasını bekleme (Backend ve Frontend)
-      - name: Wait for the apps to be ready
-        run: |
-          while ! curl --silent --fail http://localhost:3000; do
-            echo "Waiting for backend to start..."
-            sleep 10
-          done
-          while ! curl --silent --fail http://localhost:5000; do
-            echo "Waiting for frontend to start..."
-            sleep 10
-          done
+#      # 4. Uygulamanın başlatılmasını bekleme (Backend ve Frontend)
+#      - name: Wait for the apps to be ready
+#        run: |
+#          while ! curl --silent --fail http://localhost:3000; do
+#            echo "Waiting for backend to start..."
+#            sleep 10
+#          done
+#          while ! curl --silent --fail http://localhost:3000; do
+#            echo "Waiting for frontend to start..."
+#            sleep 10
+#          done
 
       # 5. Testleri çalıştırma (Selenium ve Cucumber testleri)
       - name: Run Selenium tests with Maven
         run: mvn clean verify
 
       # 6. Test sonuçlarını yükleme (Opsiyonel)
-      - name: Upload test results as artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: selenium-test-results
-          path: target/cucumber-html-reports/overview-features.html  # Doğru yolu belirtin
+      # - name: Upload test results as artifact
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: selenium-test-results
+      #     path: target/cucumber-html-reports/overview-features.html
