@@ -28,6 +28,14 @@ src/test/resources/
 │   └── ui_features/    # ui_tests.feature
 ```
 
+## CI/CD Integration with Postman Collection
+
+The Postman collection has been integrated to run within the CI/CD process using 🚀 Newman and included in the test reporting pipeline 📊. The collection is located at:
+```
+src/test/
+├── postman/
+│ └── postman_collection.json # The Postman collection file
+```
 ## 3. Test Strategy
 
 ### 3.1 Test Categories and Coverage
