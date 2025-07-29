@@ -5,7 +5,7 @@ Feature: Login and Bug Management for Bug Tracker Application
   Scenario: Successful login with valid credentials
     Given the bug tracker application is open at "http://localhost:3000"
     When I enter "admin" as the username and "123456" as the password
-   And I click the Login button
+    And I click the Login button
     Then I should see a Bug Tracking System
     And close the browser
 
@@ -71,7 +71,7 @@ Feature: Login and Bug Management for Bug Tracker Application
     Then the characters in the password field should be masked (shown as dots or asterisks)
     And close the browser
 
-      @bug_management
+  @bug_management
   Scenario: Add a bug with valid name
     Given the bug tracker application is open at "http://localhost:3000"
     And I am logged in as admin and on the bug list page
